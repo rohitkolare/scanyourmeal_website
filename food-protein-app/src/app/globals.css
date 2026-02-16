@@ -1,11 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0A0A0A;
+  --background: #000000;
+  --canvas: #0A0A0A;
+  --panel: #141414;
   --foreground: #FFFFFF;
   --matte-black: #111111;
   --neon-cyan: #00F5FF;
   --electric-blue: #007CF0;
+  --figma-blue: #18A0FB;
+  --figma-purple: #9747FF;
+  --figma-green: #0AC448;
+  --figma-orange: #FF7262;
+  --figma-pink: #FF4B91;
+  --figma-yellow: #FFD21D;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(24, 160, 251, 0.5);
 }
 
 @theme inline {
@@ -33,6 +43,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+main {
+  overflow: hidden;
+  position: relative;
+}
+
 .font-heading {
   font-family: var(--font-outfit), sans-serif;
 }
@@ -53,6 +68,13 @@ body {
 }
 
 .text-gradient {
+  background: linear-gradient(135deg, var(--figma-blue) 0%, var(--figma-purple) 50%, var(--figma-pink) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-cyan {
   background: linear-gradient(135deg, #00F5FF 0%, #007CF0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -61,19 +83,21 @@ body {
 
 /* Glassmorphism & Figma Style */
 .glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(20, 20, 20, 0.7);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
 }
 
 .glass-card {
-  background: rgba(17, 17, 17, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(20, 20, 20, 0.4);
+  backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
 .glass-card::before {
@@ -91,9 +115,81 @@ body {
 }
 
 .glass-card:hover {
-  border-color: rgba(0, 245, 255, 0.4);
-  box-shadow: 0 0 50px rgba(0, 245, 255, 0.15);
-  transform: translateY(-5px) scale(1.01);
+  border-color: var(--figma-blue);
+  box-shadow:
+    0 0 0 1px var(--figma-blue),
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(24, 160, 251, 0.2);
+  transform: translateY(-8px) scale(1.02);
+}
+
+/* Canvas Grid Background */
+.bg-canvas {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.mesh-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(at 0% 0%, rgba(24, 160, 251, 0.2) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(151, 71, 255, 0.2) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(255, 75, 145, 0.15) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(10, 196, 72, 0.15) 0px, transparent 50%);
+  filter: blur(80px);
+  z-index: -1;
+  pointer-events: none;
+  animation: mesh-flow 20s ease-in-out infinite alternate;
+}
+
+@keyframes mesh-flow {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+
+  50% {
+    transform: scale(1.1) translate(5%, 5%);
+  }
+
+  100% {
+    transform: scale(1) translate(-2%, 2%);
+  }
+}
+
+.glow-text-colorful {
+  text-shadow: 0 0 30px rgba(151, 71, 255, 0.3), 0 0 60px rgba(24, 160, 251, 0.2);
+}
+
+.floating-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+  opacity: 0.15;
+  pointer-events: none;
+  animation: float-slow 20s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(10%, -10%) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-5%, 15%) scale(0.9);
+  }
 }
 
 /* Bento Grid System */
@@ -202,7 +298,115 @@ body {
   border-color: rgba(255, 255, 255, 0.5);
 }
 
-/* Animations */
+/* Entrance Animations */
+@keyframes drop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px) scale(1.1);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  80% {
+    transform: translateY(-5px) scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-drop-in {
+  animation: drop-in 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-slide-up {
+  opacity: 0;
+  animation: slide-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Scroll-Triggered Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-left.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-scale.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Parallax System */
+.parallax-fast {
+  transform: translateY(calc(var(--scroll-y) * -0.15));
+}
+
+.parallax-medium {
+  transform: translateY(calc(var(--scroll-y) * -0.08));
+}
+
+.parallax-slow {
+  transform: translateY(calc(var(--scroll-y) * -0.04));
+}
+
+.hover-scale {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
