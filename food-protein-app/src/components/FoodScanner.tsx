@@ -35,7 +35,7 @@ interface FloatingParticleProps {
 
 const FloatingParticle: React.FC<FloatingParticleProps> = ({ delay, duration, x, y }) => {
   const particles = ['🥗', '🍎', '🥑', '🍓', '🥦', '🍊', '🥕', '🍇', '🌟', '✨'];
-  const particleIndex = Math.abs(Math.round((x + y) * 10 + delay * 100)) % particles.length;
+  const particleIndex = Math.abs(Math.round(x * 7 + y * 13 + delay * 97)) % particles.length;
   const particle = particles[particleIndex];
 
   return (
