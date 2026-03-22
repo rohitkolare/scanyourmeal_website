@@ -69,13 +69,13 @@ export default function Home() {
               href={appStoreUrl}
               className="rounded-xl bg-[#161616] px-4 py-2 text-xs font-semibold text-white transition-transform hover:-translate-y-0.5"
             >
-              Download on App Store
+              App Store
             </a>
             <a
               href={playStoreUrl}
               className="rounded-xl bg-[#161616] px-4 py-2 text-xs font-semibold text-white transition-transform hover:-translate-y-0.5"
             >
-              Get it on Google Play
+              Google Play
             </a>
           </div>
         </div>
@@ -123,13 +123,27 @@ export default function Home() {
         <div className="relative mx-auto h-[530px] w-full max-w-[520px]">
           <div className="absolute right-6 top-8 h-[470px] w-[235px] rotate-[9deg] overflow-hidden rounded-[38px] border border-black/15 bg-white p-2 shadow-[0_30px_60px_rgba(0,0,0,0.22)]">
             <div className="relative h-full w-full overflow-hidden rounded-[30px]">
-              <Image src="/analysis.png" alt="Nutrition analysis screen" fill className="object-cover" sizes="235px" />
+              <Image
+                src="/analysis.png"
+                alt="Nutrition analysis screen"
+                width={220}
+                height={450}
+                className="h-full w-full object-cover"
+                priority
+              />
             </div>
           </div>
 
           <div className="absolute left-8 top-16 h-[470px] w-[235px] -rotate-[7deg] overflow-hidden rounded-[38px] border border-black/15 bg-white p-2 shadow-[0_30px_60px_rgba(0,0,0,0.22)]">
             <div className="relative h-full w-full overflow-hidden rounded-[30px]">
-              <Image src="/hero.png" alt="Food scanner screen" fill className="object-cover" sizes="235px" />
+              <Image
+                src="/hero.png"
+                alt="Food scanner screen"
+                width={220}
+                height={450}
+                className="h-full w-full object-cover"
+                priority
+              />
             </div>
           </div>
 
