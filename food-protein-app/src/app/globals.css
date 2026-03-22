@@ -275,10 +275,22 @@ main {
   pointer-events: none;
 }
 
+.btn-premium {
+  background: linear-gradient(135deg, #9747FF 0%, #0AC448 100%);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .btn-premium:hover {
   transform: scale(1.05);
   box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.24);
 }
 
 .btn-outline {
@@ -386,6 +398,30 @@ main {
   transform: scale(1);
 }
 
+.delay-100 {
+  transition-delay: 100ms;
+}
+
+.delay-150 {
+  transition-delay: 150ms;
+}
+
+.delay-200 {
+  transition-delay: 200ms;
+}
+
+.delay-300 {
+  transition-delay: 300ms;
+}
+
+.delay-400 {
+  transition-delay: 400ms;
+}
+
+.delay-450 {
+  transition-delay: 450ms;
+}
+
 /* Parallax System */
 .parallax-fast {
   transform: translateY(calc(var(--scroll-y) * -0.15));
@@ -465,6 +501,12 @@ main {
 /* Layout Utilities */
 .section-padding {
   padding: 8rem 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 5rem 1.25rem;
+  }
 }
 
 .cyan-glow {
