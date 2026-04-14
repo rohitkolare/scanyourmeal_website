@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { clearSession } from "@/lib/admin/session";
-import { adminBrowserSupabase } from "@/lib/admin/supabase-browser";
+import { getAdminBrowserSupabase } from "@/lib/admin/supabase-browser";
 
 const items = [
   { href: "/admin", label: "Overview" },
@@ -25,7 +25,9 @@ export function AdminShell({ role, email, children }: AdminShellProps) {
   const router = useRouter();
 
   const logout = () => {
-    adminBrowserSupabase.auth.signOut().finally(() => {
+    getAdminBrowserSupabase()
+      .auth.signOut()
+      .finally(() => {
       clearSession();
       router.replace("/admin/login");
     });

@@ -4,7 +4,7 @@ import { FormEvent, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { setSession } from "@/lib/admin/session";
 import { fetchAdmin } from "@/lib/admin/client";
-import { adminBrowserSupabase } from "@/lib/admin/supabase-browser";
+import { getAdminBrowserSupabase } from "@/lib/admin/supabase-browser";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -30,9 +30,10 @@ export default function AdminLoginPage() {
     let cancelled = false;
 
     const bootstrap = async () => {
+      const supabase = getAdminBrowserSupabase();
       const {
         data: { session },
-      } = await adminBrowserSupabase.auth.getSession();
+      } = await supabase.auth.getSession();
 
       if (!session || cancelled) return;
 
@@ -58,8 +59,9 @@ export default function AdminLoginPage() {
     try {
       setError("");
       setIsLoading(true);
+      const supabase = getAdminBrowserSupabase();
 
-      const { error: authError } = await adminBrowserSupabase.auth.signInWithPassword({
+      const { error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -77,8 +79,9 @@ export default function AdminLoginPage() {
     try {
       setError("");
       setIsGoogleLoading(true);
+      const supabase = getAdminBrowserSupabase();
       const redirectTo = `${window.location.origin}/admin/login`;
-      const { error: oauthError } = await adminBrowserSupabase.auth.signInWithOAuth({
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: { redirectTo },
       });

@@ -1,9 +1,10 @@
-import { adminBrowserSupabase } from "./supabase-browser";
+import { getAdminBrowserSupabase } from "./supabase-browser";
 
 async function getAccessToken(): Promise<string> {
+  const supabase = getAdminBrowserSupabase();
   const {
     data: { session },
-  } = await adminBrowserSupabase.auth.getSession();
+  } = await supabase.auth.getSession();
 
   if (!session?.access_token) {
     throw new Error("No active admin session");

@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useSyncExternalStore } from "react";
 import { clearSession, getSession, getSessionRaw, subscribeSession } from "@/lib/admin/session";
-import { adminBrowserSupabase } from "@/lib/admin/supabase-browser";
+import { getAdminBrowserSupabase } from "@/lib/admin/supabase-browser";
 
 export function useAdminSession() {
   const raw = useSyncExternalStore(subscribeSession, getSessionRaw, () => "");
@@ -30,7 +30,9 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
     if (isLoading) return;
 
     if (session) {
-      adminBrowserSupabase.auth.getSession().then(({ data }) => {
+      getAdminBrowserSupabase()
+        .auth.getSession()
+        .then(({ data }) => {
         if (!data.session) {
           clearSession();
           router.replace("/admin/login");
