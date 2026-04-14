@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const headingFont = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const bodyFont = Inter({
+const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
@@ -163,8 +157,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${headingFont.variable} ${bodyFont.variable} antialiased`}>
+    <html lang="en" className={`${inter.variable} antialiased scroll-smooth`}>
+      <body className="font-sans bg-[#09090b] text-white overflow-x-hidden min-h-screen">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
