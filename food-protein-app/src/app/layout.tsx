@@ -158,7 +158,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} antialiased scroll-smooth`}>
-      <body className="font-sans bg-[#09090b] text-white overflow-x-hidden min-h-screen">
+      <body className="font-sans bg-[#09090b] text-white min-h-screen relative">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

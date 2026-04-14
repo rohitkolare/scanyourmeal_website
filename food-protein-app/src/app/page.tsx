@@ -11,10 +11,11 @@ import {
   Settings,
   CheckCircle,
   Camera,
-  Brain,
+  Mic,
   BarChart3,
-  Target,
-  HeartPulse,
+  Trophy,
+  Activity,
+  Droplets,
   History,
   ShieldCheck,
   CreditCard,
@@ -30,7 +31,7 @@ import {
 } from "lucide-react";
 
 export default function LandingPage() {
-  const [menuOpen, setMenuOpen] = useState(false);
+
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [toastMessage, setToastMessage] = useState("");
   const [toastVisible, setToastVisible] = useState(false);
@@ -93,10 +94,13 @@ export default function LandingPage() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
       if (navRef.current) {
-        navRef.current.style.borderBottomColor =
-          window.scrollY > 50 ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.05)";
-        navRef.current.style.backgroundColor =
-          window.scrollY > 50 ? "rgba(9,9,11,0.9)" : "rgba(9,9,11,0.8)";
+        if (window.scrollY > 50) {
+          navRef.current.style.borderBottomColor = "rgba(255,255,255,0.06)";
+          navRef.current.style.backgroundColor = "rgba(255,255,255,0.03)";
+        } else {
+          navRef.current.style.borderBottomColor = "transparent";
+          navRef.current.style.backgroundColor = "rgba(255,255,255,0.02)";
+        }
       }
     };
     handleScroll(); // Set correct state on load
@@ -137,7 +141,7 @@ export default function LandingPage() {
     setOpenFaq(openFaq === index ? null : index);
   };
 
-  const closeMenu = () => setMenuOpen(false);
+
 
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -150,12 +154,12 @@ export default function LandingPage() {
       showToast("Please enter a valid email address.");
       return;
     }
-    showToast("🎉 Check your inbox! Download link sent to " + email);
+    showToast("🎉 You're on the waitlist! We'll notify " + email + " when we launch.");
     setEmail("");
   };
 
   return (
-    <div className="relative">
+    <div className="relative overflow-clip w-full text-[16px]">
       <div className="ambient-bg" aria-hidden="true"></div>
       <div className="grid-bg" aria-hidden="true"></div>
 
@@ -179,8 +183,7 @@ export default function LandingPage() {
       {/* Navigation */}
       <nav
         ref={navRef}
-        className={`fixed top-0 left-0 right-0 z-50 border-b border-white/5 backdrop-blur-md bg-[#09090b]/80 transition-all duration-500 ease-in-out ${isScrolled ? "h-16" : "h-24 md:h-28"}`}
-        style={{ transform: "translateZ(100px)" }}
+        className={`fixed top-0 left-0 right-0 z-[100] backdrop-blur-xl transition-all duration-500 ease-in-out ${isScrolled ? "h-16 border-b border-white/[0.06] bg-white/[0.03] shadow-lg shadow-black/20" : "h-20 md:h-24 bg-white/[0.02]"}`}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-full flex items-center justify-between">
           <a href="/" className="flex items-center gap-3">
@@ -215,71 +218,9 @@ export default function LandingPage() {
               FAQ
             </a>
           </div>
-          <div className="flex items-center gap-3">
-            <a
-              href="#pricing"
-              className="btn-primary bg-white text-black text-[11px] font-semibold uppercase tracking-wider px-5 py-2.5 rounded-full transition-all duration-300"
-            >
-              Get Started
-            </a>
-          </div>
-          <button
-            onClick={() => setMenuOpen(true)}
-            className="md:hidden text-zinc-400 hover:text-white transition-colors"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
-      <div
-        className={`fixed inset-0 z-[60] bg-[#09090b]/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 transition-opacity duration-300 ${
-          menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-      >
-        <button
-          onClick={closeMenu}
-          className="absolute top-5 right-5 text-zinc-400 hover:text-white"
-        >
-          <X className="w-6 h-6" />
-        </button>
-        <a
-          href="#features"
-          onClick={closeMenu}
-          className="text-lg font-medium text-zinc-300 hover:text-white transition-colors"
-        >
-          Features
-        </a>
-        <a
-          href="#how-it-works"
-          onClick={closeMenu}
-          className="text-lg font-medium text-zinc-300 hover:text-white transition-colors"
-        >
-          How It Works
-        </a>
-        <a
-          href="#pricing"
-          onClick={closeMenu}
-          className="text-lg font-medium text-zinc-300 hover:text-white transition-colors"
-        >
-          Pricing
-        </a>
-        <a
-          href="#faq"
-          onClick={closeMenu}
-          className="text-lg font-medium text-zinc-300 hover:text-white transition-colors"
-        >
-          FAQ
-        </a>
-        <a
-          href="#pricing"
-          onClick={closeMenu}
-          className="mt-4 bg-white text-black text-sm font-semibold px-8 py-3 rounded-full"
-        >
-          Get Started
-        </a>
-      </div>
 
       {/* Hero */}
       <section
@@ -497,48 +438,60 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 reveal-scale">
-            <div className="text-center">
-              <div
-                className="text-3xl md:text-4xl font-semibold tracking-tighter text-white counter"
-                data-target="2.4"
-              >
-                0
+            <div className="flex flex-col items-center text-center">
+              <div className="flex items-baseline">
+                <div
+                  className="text-3xl md:text-4xl font-semibold tracking-tighter text-white counter"
+                  data-target="3"
+                >
+                  0
+                </div>
+                <span className="text-3xl md:text-4xl font-semibold tracking-tighter text-white ml-0.5">M+</span>
               </div>
               <div className="text-[10px] font-medium uppercase tracking-widest text-zinc-500 mt-1">
-                Million Scans
+                Meals Scanned
               </div>
             </div>
-            <div className="text-center">
-              <div
-                className="text-3xl md:text-4xl font-semibold tracking-tighter text-white counter"
-                data-target="98.7"
-              >
-                0
+            <div className="flex flex-col items-center text-center">
+              <div className="flex items-baseline">
+                <div
+                  className="text-3xl md:text-4xl font-semibold tracking-tighter text-white counter"
+                  data-target="99"
+                >
+                  0
+                </div>
+                <span className="text-3xl md:text-4xl font-semibold tracking-tighter text-white ml-0.5">%</span>
               </div>
               <div className="text-[10px] font-medium uppercase tracking-widest text-zinc-500 mt-1">
-                % Accuracy
+                Accuracy
               </div>
             </div>
-            <div className="text-center">
-              <div
-                className="text-3xl md:text-4xl font-semibold tracking-tighter text-white counter"
-                data-target="150"
-              >
-                0
+            <div className="flex flex-col items-center text-center">
+              <div className="flex items-baseline">
+                <div
+                  className="text-3xl md:text-4xl font-semibold tracking-tighter text-white counter"
+                  data-target="150"
+                >
+                  0
+                </div>
+                <span className="text-3xl md:text-4xl font-semibold tracking-tighter text-white ml-0.5">K+</span>
               </div>
               <div className="text-[10px] font-medium uppercase tracking-widest text-zinc-500 mt-1">
-                K+ Active Users
+                Active Users
               </div>
             </div>
-            <div className="text-center">
-              <div
-                className="text-3xl md:text-4xl font-semibold tracking-tighter text-white counter"
-                data-target="4.9"
-              >
-                0
+            <div className="flex flex-col items-center text-center">
+              <div className="flex items-baseline">
+                <div
+                  className="text-3xl md:text-4xl font-semibold tracking-tighter text-white counter"
+                  data-target="30"
+                >
+                  0
+                </div>
+                <span className="text-3xl md:text-4xl font-semibold tracking-tighter text-white ml-0.5">+</span>
               </div>
               <div className="text-[10px] font-medium uppercase tracking-widest text-zinc-500 mt-1">
-                ★ App Store Rating
+                Nutrients Tracked
               </div>
             </div>
           </div>
@@ -572,11 +525,10 @@ export default function LandingPage() {
                   <Camera className="w-5 h-5 text-indigo-400" />
                 </div>
                 <h3 className="text-lg font-medium tracking-tight text-white mb-2">
-                  Instant Scan
+                  Vision AI Scanner
                 </h3>
                 <p className="text-sm font-light leading-relaxed text-zinc-400">
-                  Point your camera at any meal — cooked, raw, packaged — and get
-                  results in under 2 seconds.
+                  Point your camera at any meal to instantly detect ingredients and calculate highly accurate nutritional breakdowns.
                 </p>
               </div>
             </div>
@@ -584,14 +536,13 @@ export default function LandingPage() {
               <div className="card-shine" aria-hidden="true"></div>
               <div className="relative z-[2]">
                 <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-5 shadow-lg shadow-blue-500/5">
-                  <Brain className="w-5 h-5 text-blue-400" />
+                  <Mic className="w-5 h-5 text-blue-400" />
                 </div>
                 <h3 className="text-lg font-medium tracking-tight text-white mb-2">
-                  AI Recognition
+                  Voice Meal Logging
                 </h3>
                 <p className="text-sm font-light leading-relaxed text-zinc-400">
-                  Trained on 1M+ food images. Identifies individual ingredients,
-                  cooking methods, and portion sizes.
+                  Too busy to type? Just speak to our conversational Voice AI chat to effortlessly log what you ate on the go.
                 </p>
               </div>
             </div>
@@ -602,11 +553,10 @@ export default function LandingPage() {
                   <BarChart3 className="w-5 h-5 text-emerald-400" />
                 </div>
                 <h3 className="text-lg font-medium tracking-tight text-white mb-2">
-                  Full Macro Breakdown
+                  Biometric Dashboard
                 </h3>
                 <p className="text-sm font-light leading-relaxed text-zinc-400">
-                  Calories, protein, carbs, fat, fiber, sugar, sodium, and 30+
-                  micronutrients per serving.
+                  Visualize your bodily health, weight trends, and full macro breakdowns through an elegant human biometric interface.
                 </p>
               </div>
             </div>
@@ -614,14 +564,13 @@ export default function LandingPage() {
               <div className="card-shine" aria-hidden="true"></div>
               <div className="relative z-[2]">
                 <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-5 shadow-lg shadow-amber-500/5">
-                  <Target className="w-5 h-5 text-amber-400" />
+                  <Trophy className="w-5 h-5 text-amber-400" />
                 </div>
                 <h3 className="text-lg font-medium tracking-tight text-white mb-2">
-                  Goal Tracking
+                  Streaks & Leaderboards
                 </h3>
                 <p className="text-sm font-light leading-relaxed text-zinc-400">
-                  Set personalized daily targets for calories and macros. Track
-                  progress with beautiful charts.
+                  Gamify your diet! Compete with friends, climb the leaderboard, and maintain logging streaks to build healthy habits.
                 </p>
               </div>
             </div>
@@ -629,14 +578,13 @@ export default function LandingPage() {
               <div className="card-shine" aria-hidden="true"></div>
               <div className="relative z-[2]">
                 <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center mb-5 shadow-lg shadow-rose-500/5">
-                  <HeartPulse className="w-5 h-5 text-rose-400" />
+                  <Activity className="w-5 h-5 text-rose-400" />
                 </div>
                 <h3 className="text-lg font-medium tracking-tight text-white mb-2">
-                  Health Insights
+                  Step & Hydration Tracker
                 </h3>
                 <p className="text-sm font-light leading-relaxed text-zinc-400">
-                  Get personalized suggestions based on your dietary preferences,
-                  allergies, and health conditions.
+                  ScanYourMeal isn't just for food. Track your daily steps and log your water intake natively right inside the app.
                 </p>
               </div>
             </div>
@@ -647,11 +595,10 @@ export default function LandingPage() {
                   <History className="w-5 h-5 text-violet-400" />
                 </div>
                 <h3 className="text-lg font-medium tracking-tight text-white mb-2">
-                  Meal History
+                  Meal History & Insights
                 </h3>
                 <p className="text-sm font-light leading-relaxed text-zinc-400">
-                  Every scan is saved automatically. Browse your meal timeline,
-                  spot patterns, and improve your diet.
+                  Every scan is saved automatically. Access your chronological timeline and analyze historical dietary patterns.
                 </p>
               </div>
             </div>
@@ -815,8 +762,7 @@ export default function LandingPage() {
                     <Check className="w-3 h-3 text-indigo-400" />
                   </div>
                   <p className="text-sm font-light text-zinc-300">
-                    Track 30+ micronutrients including vitamins, minerals, and
-                    amino acids
+                    Deep analysis of your daily macros: Proteins, Carbs, Fats, and Fibre
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
@@ -824,7 +770,7 @@ export default function LandingPage() {
                     <Check className="w-3 h-3 text-indigo-400" />
                   </div>
                   <p className="text-sm font-light text-zinc-300">
-                    Visual trend charts to spot nutritional gaps over time
+                    Visual health mapping with our unique Biometric Dashboard interface
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
@@ -832,7 +778,7 @@ export default function LandingPage() {
                     <Check className="w-3 h-3 text-indigo-400" />
                   </div>
                   <p className="text-sm font-light text-zinc-300">
-                    Integration with Apple Health, Google Fit, and Fitbit
+                    Log meals completely hands-free using Conversational Voice AI
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
@@ -840,8 +786,7 @@ export default function LandingPage() {
                     <Check className="w-3 h-3 text-indigo-400" />
                   </div>
                   <p className="text-sm font-light text-zinc-300">
-                    Export reports as PDF to share with your nutritionist or
-                    doctor
+                    Built-in gamified tracking for streaks, hydration, and daily steps
                   </p>
                 </div>
               </div>
@@ -905,7 +850,7 @@ export default function LandingPage() {
                   <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                 </div>
                 <p className="text-sm font-light leading-relaxed text-zinc-300 mb-6">
-                  &quot;₹199 for unlimited scans is a steal. I was paying triple
+                  &quot;$2.99 for unlimited scans is a steal. I was paying triple
                   for a nutritionist. This app is just as good and available
                   24/7.&quot;
                 </p>
@@ -973,11 +918,11 @@ export default function LandingPage() {
               Pricing
             </span>
             <h2 className="text-3xl md:text-5xl font-semibold tracking-tight text-gradient mb-4">
-              Try Free. Go Unlimited for ₹199.
+              Try Free. Go Unlimited for $2.99.
             </h2>
             <p className="text-base font-light leading-relaxed text-zinc-400">
               Start with 7 free scans. Love it? Unlock unlimited for the price of
-              a chai per month.
+              a coffee per month.
             </p>
           </div>
           <div
@@ -1003,7 +948,7 @@ export default function LandingPage() {
               </div>
               <div className="mb-6">
                 <span className="text-4xl font-semibold tracking-tighter text-white">
-                  ₹0
+                  $0
                 </span>
                 <span className="text-sm text-zinc-500">forever</span>
               </div>
@@ -1026,7 +971,7 @@ export default function LandingPage() {
                   <X className="w-4 h-4 text-zinc-700 flex-shrink-0" /> Goal tracking &amp; history
                 </li>
                 <li className="flex items-center gap-2.5 text-sm font-light text-zinc-500">
-                  <X className="w-4 h-4 text-zinc-700 flex-shrink-0" /> Health app integrations
+                  <X className="w-4 h-4 text-zinc-700 flex-shrink-0" /> Voice Meal Chat Logging
                 </li>
               </ul>
             </div>
@@ -1052,12 +997,12 @@ export default function LandingPage() {
               </div>
               <div className="mb-2">
                 <span className="text-4xl font-semibold tracking-tighter text-white">
-                  ₹199
+                  $2.99
                 </span>
                 <span className="text-sm text-zinc-500">/month</span>
               </div>
               <p className="text-[10px] text-zinc-600 mb-6">
-                That&apos;s less than ₹7 per day. Cheaper than a chai. ☕
+                That&apos;s less than $0.10 per day. Cheaper than a coffee. ☕
               </p>
               <ul className="space-y-3 mb-8 flex-1">
                 <li className="flex items-center gap-2.5 text-sm font-light text-zinc-300">
@@ -1077,12 +1022,12 @@ export default function LandingPage() {
                   tracking &amp; charts
                 </li>
                 <li className="flex items-center gap-2.5 text-sm font-light text-zinc-300">
-                  <Check className="w-4 h-4 text-indigo-400 flex-shrink-0" /> Allergy &amp;
-                  diet alerts
+                  <Check className="w-4 h-4 text-indigo-400 flex-shrink-0" /> Voice Meal
+                  Chat Logging
                 </li>
                 <li className="flex items-center gap-2.5 text-sm font-light text-zinc-300">
-                  <Check className="w-4 h-4 text-indigo-400 flex-shrink-0" /> Apple Health
-                  &amp; Google Fit sync
+                  <Check className="w-4 h-4 text-indigo-400 flex-shrink-0" /> Biometric
+                  Dashboard Analysis
                 </li>
               </ul>
             </div>
@@ -1124,7 +1069,7 @@ export default function LandingPage() {
                 a: "Absolutely. All food images are processed on-device and immediately discarded after analysis. We never store your food photos on our servers.",
               },
               {
-                q: "Can I cancel my ₹199 subscription anytime?",
+                q: "Can I cancel my $2.99 subscription anytime?",
                 a: "Yes, cancel anytime from your account settings — no hidden charges, no lock-in. Access continues until the end of your billing period, then switches to free with 7 scans.",
               },
               {
@@ -1175,30 +1120,20 @@ export default function LandingPage() {
             className="text-base md:text-lg font-light leading-relaxed text-zinc-400 max-w-xl mx-auto mb-10"
             style={{ transform: "translateZ(10px)" }}
           >
-            Join 150,000+ people who&apos;ve transformed their relationship with
-            food. Your first 7 scans are free.
+            AI-powered nutrition analysis is almost here. Get ready to know
+            exactly what&apos;s on your plate.
           </p>
           <div
-            className="max-w-md mx-auto flex gap-3"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-indigo-500/30 bg-indigo-500/5 backdrop-blur-sm"
             style={{ transform: "translateZ(30px)" }}
           >
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 bg-white/[0.05] border border-white/10 rounded-full px-5 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-indigo-500/50 transition-colors duration-300"
-            />
-            <button
-              onClick={handleEmailSubmit}
-              className="btn-primary bg-white text-black text-[11px] font-semibold uppercase tracking-wider px-6 py-3 rounded-full transition-all duration-300 whitespace-nowrap flex items-center gap-2 shadow-lg shadow-white/10"
-            >
-              Get the App
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            <div className="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse"></div>
+            <span className="text-sm font-semibold uppercase tracking-widest text-indigo-300">
+              Coming Soon
+            </span>
           </div>
-          <p className="text-[10px] text-zinc-600 mt-4">
-            No credit card required · Available on iOS &amp; Android
+          <p className="text-[10px] text-zinc-600 mt-6">
+            Stay tuned for launch updates
           </p>
         </div>
       </section>
@@ -1206,8 +1141,8 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-white/5 py-16 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12">
-            <div className="col-span-2 md:col-span-1">
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-6 md:gap-12 mb-12">
+            <div className="col-span-3 md:col-span-1 mb-6 md:mb-0">
               <a href="/" className="flex items-center gap-2.5 mb-4">
                 <img src="/app-logo.png" alt="ScanYourMeal Logo" className="w-8 h-8 rounded-lg shadow-lg" />
                 <span className="text-sm font-semibold tracking-tight">
@@ -1220,7 +1155,7 @@ export default function LandingPage() {
               </p>
             </div>
             <div>
-              <h4 className="text-[10px] font-medium uppercase tracking-widest text-zinc-500 mb-4">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4">
                 Product
               </h4>
               <ul className="space-y-2.5">
@@ -1251,7 +1186,7 @@ export default function LandingPage() {
               </ul>
             </div>
             <div>
-              <h4 className="text-[10px] font-medium uppercase tracking-widest text-zinc-500 mb-4">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4">
                 Company
               </h4>
               <ul className="space-y-2.5">
@@ -1290,7 +1225,7 @@ export default function LandingPage() {
               </ul>
             </div>
             <div>
-              <h4 className="text-[10px] font-medium uppercase tracking-widest text-zinc-500 mb-4">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4">
                 Legal
               </h4>
               <ul className="space-y-2.5">
